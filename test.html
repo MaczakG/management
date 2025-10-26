@@ -1,51 +1,43 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Test</title>
-    <meta name="description" content="Basic HTML5 structure for test.html" />
-    <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-    <header role="banner">
-        <h1>Project Title</h1>
-        <nav role="navigation" aria-label="Main">
-            <ul>
-                <li><a href="#overview">Overview</a></li>
-                <li><a href="#examples">Examples</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+<input id="name" placeholder="Keresés név alapján">
+<input id="completion" placeholder="Teljesítés típusa">
+<button onclick="loadData()">Keresés</button>
 
-    <main role="main">
-        <section id="overview">
-            <h2>Overview</h2>
-            <p>Start here — add your content.</p>
-        </section>
+<table id="dataTable" border="1">
+  <thead>
+    <tr>
+      <th>Név</th>
+      <th>Ország</th>
+      <th>Város</th>
+      <th>Adószám</th>
+      <th>Teljesítés</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
 
-        <section id="examples">
-            <h2>Examples</h2>
-            <article>
-                <h3>Example item</h3>
-                <p>Example paragraph demonstrating structure.</p>
-            </article>
-        </section>
+<script>
+async function loadData() {
+  const name = document.getElementById("name").value;
+  const completion = document.getElementById("completion").value;
 
-        <aside aria-label="Related">
-            <h2>Related</h2>
-            <p>Notes, links, or short info.</p>
-        </aside>
-    </main>
+  const res = await fetch(`https://your-amplify-backend-url/api/partners?name=${name}&completion=${completion}`);
+  const data = await res.json();
 
-    <footer role="contentinfo">
-        <p>&copy; <span id="year"></span> Your Name</p>
-    </footer>
+  const tbody = document.querySelector("#dataTable tbody");
+  tbody.innerHTML = "";
 
-    <script>
-        // simple script to set current year
-        document.getElementById('year').textContent = new Date().getFullYear();
-    </script>
-</body>
-</html>
+  data.forEach(item => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${item.Name || ""}</td>
+      <td>${item.Country || ""}</td>
+      <td>${item.City || ""}</td>
+      <td>${item.Vat || ""}</td>
+      <td>${item.Completion_type || ""}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+loadData();
+</script>
