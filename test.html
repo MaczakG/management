@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Test</title>
+    <meta name="description" content="Basic HTML5 structure for test.html" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <header role="banner">
+        <h1>Project Title</h1>
+        <nav role="navigation" aria-label="Main">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#examples">Examples</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main role="main">
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>Start here — add your content.</p>
+        </section>
+
+        <section id="examples">
+            <h2>Examples</h2>
+            <article>
+                <h3>Example item</h3>
+                <p>Example paragraph demonstrating structure.</p>
+            </article>
+        </section>
+
+        <aside aria-label="Related">
+            <h2>Related</h2>
+            <p>Notes, links, or short info.</p>
+        </aside>
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; <span id="year"></span> Your Name</p>
+    </footer>
+
+    <script>
+        // simple script to set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
