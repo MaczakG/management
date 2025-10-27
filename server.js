@@ -1,32 +1,47 @@
-import express from "express";
-import { MongoClient } from "mongodb";
-import cors from "cors";
+const express = require("express");
+const cors = require("cors");
+const { MongoClient } = require("mongodb");
+const path = require("path");
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
+// Statikus fájlok
+app.use(express.static(path.join(__dirname, "frontend")));
+
+// MongoDB
 const uri = "mongodb+srv://CMS_BOGRAPHIC:Kiralyok007@mgf.ym6ix.mongodb.net/?retryWrites=true&w=majority&appName=MGF";
 const client = new MongoClient(uri);
 
-app.get("/api/partners", async (req, res) => {
-  try {
-    await client.connect();
-    const db = client.db("MAIN_DATABASE");
-    const collection = db.collection("Partner_datas");
+async function connectDB() {
+    try {
+        await client.connect();
+        console.log("MongoDB connected!");
+    } catch (err) {
+        console.error(err);
+    }
+}
+connectDB();
 
-    const name = req.query.name || "";
-    const completion = req.query.completion || "";
+const database = client.db("MAIN_DATABASE");
+const collection = database.collection("Partner_datas");
 
-    const filters = {};
-    if (name) filters.Name = { $regex: name, $options: "i" };
-    if (completion) filters.Completion_type = { $regex: completion, $options: "i" };
+// API endpoint
+app.get("/partners", async (req, res) => {
+    try {
+        const { name, completion } = req.query;
+        const filters = {};
+        if (name) filters.Name = { $regex: name, $options: "i" };
+        if (completion) filters.Completion_type = { $regex: completion, $options: "i" };
 
-    const docs = await collection.find(filters).toArray();
-    res.json(docs);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
-  }
+        const documents = await collection.find(filters).toArray();
+        res.json(documents);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Hiba történt a lekérés során" });
+    }
 });
 
-app.listen(3000, () => console.log("Server running on port 3000"));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
