@@ -52,35 +52,36 @@
 
 <script>
 async function loadData() {
-  const name = document.getElementById("nameFilter").value;
-  const completion = document.getElementById("completionFilter").value;
+    const name = document.getElementById("nameFilter").value;
+    const completion = document.getElementById("completionFilter").value;
 
-  // Amplify automatikusan a megfelelő URL-t adja, ha a backend is ott van
-  const url = new URL("/partners", window.location.origin);
-  if (name) url.searchParams.append("name", name);
-  if (completion) url.searchParams.append("completion", completion);
+    // Lambda API URL
+    const url = new URL("https://0r7l6eygn8.execute-api.eu-north-1.amazonaws.com/mongodb");
+    if (name) url.searchParams.append("name", name);
+    if (completion) url.searchParams.append("completion", completion);
 
-  try {
-    const res = await fetch(url);
-    const data = await res.json();
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
 
-    const tbody = document.querySelector("#partnersTable tbody");
-    tbody.innerHTML = "";
+        const tbody = document.querySelector("#partnersTable tbody");
+        tbody.innerHTML = "";
 
-    data.forEach(doc => {
-      const row = document.createElement("tr");
-      const columns = ["ID","Name","Partner_type","Country","Zip","City","Street","Vat","Completion_type","EU_vat","Finance_type","Reg_number","Email","Bank","Invoice_type","Currency","Language","Day","CreatedAt"];
-      columns.forEach(col => {
-        const td = document.createElement("td");
-        td.textContent = doc[col] || "";
-        row.appendChild(td);
-      });
-      tbody.appendChild(row);
-    });
-  } catch (err) {
-    console.error("Hiba történt a lekérés során:", err);
-  }
+        data.forEach(doc => {
+            const row = document.createElement("tr");
+            const columns = ["ID","Name","Partner_type","Country","Zip","City","Street","Vat","Completion_type","EU_vat","Finance_type","Reg_number","Email","Bank","Invoice_type","Currency","Language","Day","CreatedAt"];
+            columns.forEach(col => {
+                const td = document.createElement("td");
+                td.textContent = doc[col] || "";
+                row.appendChild(td);
+            });
+            tbody.appendChild(row);
+        });
+    } catch (err) {
+        console.error("Hiba történt a lekérés során:", err);
+    }
 }
+
 
 // Betöltéskor lekér minden adatot
 loadData();
