@@ -55,13 +55,15 @@ async function loadData() {
     const name = document.getElementById("nameFilter").value;
     const completion = document.getElementById("completionFilter").value;
 
-    // Lambda API URL
-    const url = new URL("https://0r7l6eygn8.execute-api.eu-north-1.amazonaws.com/mongodb");
+    // EC2 publikus IP + Node.js szerver port
+    const url = new URL("http://13.60.229.11:3000/partners"); // <-- cseréld a saját publikus IP-re
     if (name) url.searchParams.append("name", name);
     if (completion) url.searchParams.append("completion", completion);
 
     try {
         const res = await fetch(url);
+        if (!res.ok) throw new Error("Hálózati hiba: " + res.status);
+
         const data = await res.json();
 
         const tbody = document.querySelector("#partnersTable tbody");
@@ -79,9 +81,9 @@ async function loadData() {
         });
     } catch (err) {
         console.error("Hiba történt a lekérés során:", err);
+        alert("Hiba a lekérés során. Ellenőrizd, hogy a szerver fut és a publikus IP helyes.");
     }
 }
-
 
 // Betöltéskor lekér minden adatot
 loadData();
