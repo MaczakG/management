@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partner Lista</title>
+<style>
+  body { font-family: Arial; padding: 20px; }
+  input, select { margin: 5px; padding: 5px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+  th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  th { background-color: #f0f0f0; }
+</style>
+</head>
+<body>
+<h1>Partner Lista</h1>
+
+<input type="text" id="nameFilter" placeholder="Név keresése">
+<select id="completionFilter">
+  <option value="">Összes</option>
+  <option value="Folyamatos">Folyamatos</option>
+  <option value="Egyszeri">Egyszeri</option>
+</select>
+<button onclick="loadData()">Lekérdezés</button>
+
+<table id="partnersTable">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Név</th>
+      <th>Partner típusa</th>
+      <th>Ország</th>
+      <th>Irányítószám</th>
+      <th>Város</th>
+      <th>Utca, házszám</th>
+      <th>Adószám</th>
+      <th>Teljesítés</th>
+      <th>EU adószám</th>
+      <th>Pénzügyi forma</th>
+      <th>Cégjegyzékszám</th>
+      <th>E-mail</th>
+      <th>Bankszámlaszám</th>
+      <th>Számla típusa</th>
+      <th>Pénznem</th>
+      <th>Nyelv</th>
+      <th>Fizetési határidő</th>
+      <th>Létrehozás ideje</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+async function loadData() {
+  const name = document.getElementById("nameFilter").value;
+  const completion = document.getElementById("completionFilter").value;
+
+  // Amplify automatikusan a megfelelő URL-t adja, ha a backend is ott van
+  const url = new URL("/partners", window.location.origin);
+  if (name) url.searchParams.append("name", name);
+  if (completion) url.searchParams.append("completion", completion);
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+
+    const tbody = document.querySelector("#partnersTable tbody");
+    tbody.innerHTML = "";
+
+    data.forEach(doc => {
+      const row = document.createElement("tr");
+      const columns = ["ID","Name","Partner_type","Country","Zip","City","Street","Vat","Completion_type","EU_vat","Finance_type","Reg_number","Email","Bank","Invoice_type","Currency","Language","Day","CreatedAt"];
+      columns.forEach(col => {
+        const td = document.createElement("td");
+        td.textContent = doc[col] || "";
+        row.appendChild(td);
+      });
+      tbody.appendChild(row);
+    });
+  } catch (err) {
+    console.error("Hiba történt a lekérés során:", err);
+  }
+}
+
+// Betöltéskor lekér minden adatot
+loadData();
+</script>
+</body>
+</html>
