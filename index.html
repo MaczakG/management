@@ -136,33 +136,36 @@
         <p>Itt a bejövő számlák listája jelenik meg...</p>
     </div>
 
-    <div id="partnerek" class="tabcontent">
-     <input type="text" id="nameFilter" placeholder="Név keresése">
-      <select id="completionFilter">
-        <option value="">Összes</option>
-        <option value="Folyamatos">Folyamatos</option>
-        <option value="Egyszeri">Egyszeri</option>
-      </select>
-      <button onclick="loadData()">Lekérdezés</button>
 
-      <div class="table-container">
-        <table id="partnersTable" class="table_szamlak">
-          <thead class="header_szamlak">
-            <tr class="body_szamlak">
-              <th>ID</th>
-              <th>Név</th>
-              <th>Partner típusa</th>
-              <th>Ország</th>
-              <th>Irányítószám</th>
-              <th>Város</th>
-              <th>Utca, házszám</th>
-              <th>Adószám</th>
-            </tr>
-          </thead>
-          <tbody>
-        </table>
-      </div>
+    <div id="partnerek" class="tabcontent">
+    <input type="text" id="nameFilter" placeholder="Név keresése">
+    <select id="completionFilter">
+    <option value="">Összes</option>
+    <option value="Folyamatos">Folyamatos</option>
+    <option value="Egyszeri">Egyszeri</option>
+    </select>
+    <button class="kereses" onclick="loadData()">Lekérdezés</button>
+    <button class="ujpartner" onclick="loadData()">Új partner</button>
+    <button class="töröl" onclick="loadData()">Partner törlés</button>
+
+    <div class="table-container">
+    <table id="partnersTable" class="table_szamlak">
+        <thead class="header_szamlak">
+        <tr class="body_szamlak">
+            <th>ID</th>
+            <th>Név</th>
+            <th>Partner típusa</th>
+            <th>Ország</th>
+            <th>Irányítószám</th>
+            <th>Város</th>
+            <th>Utca, házszám</th>
+            <th>Adószám</th>
+        </tr>
+        </thead>
+        <tbody>
+    </table>
     </div>
+    
 
     <div id="felhasznalok" class="tabcontent">
         <h2>Felhasználók tartalma</h2>

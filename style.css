@@ -181,8 +181,88 @@ h1{
     display: block;
 }
 
+.töröl{
+    background-color: #c1121f;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    padding: 8px 20px;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
+.ujpartner{
+    margin-left: 50px;
+    background-color: #a3b18a;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    padding: 8px 20px;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
+/* Keresőmező és legördülő stílus */
+#completionFilter {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    padding: 8px 12px;
+    margin-right: 10px;
+    border: 1px solid #575757;
+    border-radius: 8px;
+    background-color: #333;
+    color: #fff;
+    outline: none;
+    transition: border 0.3s ease, background-color 0.3s ease;
+}
+
+#nameFilter {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    padding: 8px 12px;
+    margin-right: 10px;
+    border: 1px solid #575757;
+    border-radius: 8px;
+    background-color: #333;
+    color: #fff;
+    outline: none;
+    width: 400px;
+    transition: border 0.3s ease, background-color 0.3s ease;
+}
+
+#nameFilter::placeholder {
+    color: #aaa; /* világosabb szín a placeholdernek */
+}
+
+#nameFilter:focus, #completionFilter:focus {
+    border-color: #219ebc; /* zöldes kiemelés fókuszban */
+    background-color: #444;
+}
+
+/* Lekérdezés gomb stílus */
+.kereses {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    padding: 8px 20px;
+    color: #fff;
+    background-color: #219ebc; /* zöldes gomb */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#partnerek button:hover {
+    background-color: #219ebc;
+    transform: scale(1.02);
+}
 
 
 
@@ -330,6 +410,7 @@ ul.list li {
     width: 90%;
     border-collapse: collapse;
     font-size: 14px;
+    margin-top: 15px;
 }
 
 .table_szamlak th{
@@ -373,10 +454,23 @@ tr {
     border-bottom: 1px solid #fff;
 }
 
-.body_fiz:hover,.body_szamlak:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* Hover effektus */
+tbody tr.body_szamlak:hover {
+    background-color: rgba(255, 255, 255, 0.1);
     cursor: pointer;
 }
+
+thead th:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+}
+
+/* Csak a tbody tr-ekre vonatkozik */
+#partnersTable tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+
 
 .tabel_excel{
     display: flex;
