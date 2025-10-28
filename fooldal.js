@@ -45,7 +45,7 @@ function openTab(evt, tabName) {
 
 //ÚJ SZÁMLA
 document.addEventListener('DOMContentLoaded', function() {
-    const ujButton = document.querySelector('.uj');
+    const ujButton = document.querySelector('.ujpartner');
     const popup = document.getElementById('popup');
     const closeBtn = document.getElementById('closeBtn');
     const backgroundBlur = document.querySelector('.background-blur');
