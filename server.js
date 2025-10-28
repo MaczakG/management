@@ -61,6 +61,7 @@ app.get("/", (req, res) => {
 });
 
 // HTTPS szerver indítása 443-on
-https.createServer(sslOptions, app).listen(443, () => {
-  console.log("HTTPS Server running on port 443");
+https.createServer(sslOptions, app).listen(3000, () => {
+  console.log("HTTPS Server running on port 3000");
 });
+
