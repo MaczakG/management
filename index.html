@@ -1,94 +1,194 @@
-<!DOCTYPE html>
-<html lang="hu">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Partner Lista</title>
-<style>
-  body { font-family: Arial; padding: 20px; }
-  input, select { margin: 5px; padding: 5px; }
-  table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-  th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-  th { background-color: #f0f0f0; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
+    <title>Főoldal</title>
 </head>
+
 <body>
-<h1>Partner Lista</h1>
+    <script src="fooldal.js"></script>
 
-<input type="text" id="nameFilter" placeholder="Név keresése">
-<select id="completionFilter">
-  <option value="">Összes</option>
-  <option value="Folyamatos">Folyamatos</option>
-  <option value="Egyszeri">Egyszeri</option>
-</select>
-<button onclick="loadData()">Lekérdezés</button>
+    <div class="sidebar">
+        <ul>
+            <button class="button" onclick="openTab(event, 'kimeno_szamlak')">Kimenő számlák</button>
+            <button class="button" onclick="openTab(event, 'bejovo_szamlak')">Bejövő számlák</button>
+            <button class="button" onclick="openTab(event, 'partnerek')">Partnerek</button>
+            <button class="button" onclick="openTab(event, 'felhasznalok')">Felhasználók</button>
+            <button class="button" onclick="openTab(event, 'ertesitok')">Értesítések</button>
+            <button class="button" onclick="openTab(event, 'beallitasok')">Beállítások</button>
+            <div class="vonal"></div>
+            <button class="button" onclick="openTab(event, 'task')">Task management</button>
+            <button class="button" onclick="openTab(event, 'konyveles')">Könyvelés</button>
+            <p class="copy">Minden jog fenttartva Copyright © 2023 - 2024 bographic.hu</p>
+        </ul>
+    </div>
 
-<table id="partnersTable">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Név</th>
-      <th>Partner típusa</th>
-      <th>Ország</th>
-      <th>Irányítószám</th>
-      <th>Város</th>
-      <th>Utca, házszám</th>
-      <th>Adószám</th>
-      <th>Teljesítés</th>
-      <th>EU adószám</th>
-      <th>Pénzügyi forma</th>
-      <th>Cégjegyzékszám</th>
-      <th>E-mail</th>
-      <th>Bankszámlaszám</th>
-      <th>Számla típusa</th>
-      <th>Pénznem</th>
-      <th>Nyelv</th>
-      <th>Fizetési határidő</th>
-      <th>Létrehozás ideje</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+    <div class="background-blur"></div>
 
-<script>
-async function loadData() {
-    const name = document.getElementById("nameFilter").value;
-    const completion = document.getElementById("completionFilter").value;
+    <!-- Popup -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h1 class="uj_szla_cim">Új számla létrehozása</h1>
+            <input type="text" placeholder="Első mező"><br><br>
+            <input type="text" placeholder="Második mező"><br><br>
+            <button class="button" id="closeBtn">Bezárás</button>
+        </div>
+    </div>
 
-    // EC2 publikus IP + Node.js szerver port
-    const url = new URL("https://13.60.229.11/partners"); // <-- cseréld a saját publikus IP-re
-    if (name) url.searchParams.append("name", name);
-    if (completion) url.searchParams.append("completion", completion);
 
-    try {
-        const res = await fetch(url);
-        if (!res.ok) throw new Error("Hálózati hiba: " + res.status);
 
-        const data = await res.json();
 
-        const tbody = document.querySelector("#partnersTable tbody");
-        tbody.innerHTML = "";
+    <div id="kimeno_szamlak" class="tabcontent">
+        <div class="szamlakezeles">
+            <h1>Számlák</h1>
+            <button class="uj"><span>ÚJ</span></button>
+            <button class="email"><span>EMAIL</span></button>
+            <button class="csomag"><span>CSOMAG</span></button>
+            <button class="excel"><span>EXCEL</span></button>
+        </div>
+        
+        
+        <table class="table_szamlak">
+            <thead class="header_szamlak">
+                <tr>
+                    <th>Sorszám</th>
+                    <th>Ügyfél</th>
+                    <th>Kiállítás dátuma</th>
+                    <th>Teljesítés dátuma</th>
+                    <th>Fizetési határidő</th>
+                    <th>Fizette dátum</th>
+                    <th>Összeg</th>
+                    <th>Megjegyzés</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="body_szamlak">
+                    <td>MG-2024-1</td>
+                    <td>Ügyfél A</td>
+                    <td>2024-09-01</td>
+                    <td>2024-09-10</td>
+                    <td>2024-09-20</td>
+                    <td>2024-09-19</td>
+                    <td>50 000 HUF</td>
+                    <td>Nincs megjegyzés</td>
+                </tr>
+                <tr class="body_szamlak">
+                    <td>MG-2024-2</td>
+                    <td>Ügyfél B</td>
+                    <td>2024-09-05</td>
+                    <td>2024-09-12</td>
+                    <td>2024-09-22</td>
+                    <td>-</td>
+                    <td>75 000 HUF</td>
+                    <td>Késedelmes</td>
+                </tr>
+                <tr class="body_szamlak">
+                    <td>MG-2024-3</td>
+                    <td>Ügyfél C</td>
+                    <td>2024-09-10</td>
+                    <td>2024-09-15</td>
+                    <td>2024-09-25</td>
+                    <td>-</td>
+                    <td>100 000 HUF</td>
+                    <td>Nincs megjegyzés</td>
+                </tr>
+                <tr class="body_szamlak">
+                    <td>MG-2024-4</td>
+                    <td>Ügyfél C</td>
+                    <td>2024-09-10</td>
+                    <td>2024-09-15</td>
+                    <td>2024-09-25</td>
+                    <td>-</td>
+                    <td>100 000 HUF</td>
+                    <td>Nincs megjegyzés</td>
+                </tr>
+                <tr class="body_szamlak">
+                    <td>MG-2024-5</td>
+                    <td>Ügyfél C</td>
+                    <td>2024-09-10</td>
+                    <td>2024-09-15</td>
+                    <td>2024-09-25</td>
+                    <td>-</td>
+                    <td>100 000 HUF</td>
+                    <td>Nincs megjegyzés</td>
+                </tr>
+                <tr class="body_szamlak">
+                    <td>MG-2024-6</td>
+                    <td>Ügyfél C</td>
+                    <td>2024-09-10</td>
+                    <td>2024-09-15</td>
+                    <td>2024-09-25</td>
+                    <td>-</td>
+                    <td>100 000 HUF</td>
+                    <td>Nincs megjegyzés</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-        data.forEach(doc => {
-            const row = document.createElement("tr");
-            const columns = ["ID","Name","Partner_type","Country","Zip","City","Street","Vat","Completion_type","EU_vat","Finance_type","Reg_number","Email","Bank","Invoice_type","Currency","Language","Day","CreatedAt"];
-            columns.forEach(col => {
-                const td = document.createElement("td");
-                td.textContent = doc[col] || "";
-                row.appendChild(td);
-            });
-            tbody.appendChild(row);
-        });
-    } catch (err) {
-        console.error("Hiba történt a lekérés során:", err);
-        alert("Hiba a lekérés során. Ellenőrizd, hogy a szerver fut és a publikus IP helyes.");
-    }
-}
+    <div id="bejovo_szamlak" class="tabcontent">
+        <h2>Bejövő számlák tartalma</h2>
+        <p>Itt a bejövő számlák listája jelenik meg...</p>
+    </div>
 
-// Betöltéskor lekér minden adatot
-loadData();
-</script>
+    <div id="partnerek" class="tabcontent">
+     <input type="text" id="nameFilter" placeholder="Név keresése">
+      <select id="completionFilter">
+        <option value="">Összes</option>
+        <option value="Folyamatos">Folyamatos</option>
+        <option value="Egyszeri">Egyszeri</option>
+      </select>
+      <button onclick="loadData()">Lekérdezés</button>
+
+      <div class="table-container">
+        <table id="partnersTable" class="table_szamlak">
+          <thead class="header_szamlak">
+            <tr class="body_szamlak">
+              <th>ID</th>
+              <th>Név</th>
+              <th>Partner típusa</th>
+              <th>Ország</th>
+              <th>Irányítószám</th>
+              <th>Város</th>
+              <th>Utca, házszám</th>
+              <th>Adószám</th>
+            </tr>
+          </thead>
+          <tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="felhasznalok" class="tabcontent">
+        <h2>Felhasználók tartalma</h2>
+        <p>Itt a felhasználók listája jelenik meg...</p>
+    </div>
+
+    <div id="ertesitok" class="tabcontent">
+        <h2>Értesítők tartalma</h2>
+        <p>Itt az értesítők jelennek meg...</p>
+    </div>
+
+    <div id="beallitasok" class="tabcontent">
+        <h2>Beállítások tartalma</h2>
+        <p>Itt a beállítások jelennek meg...</p>
+    </div>   
+
+    <div id="konyveles" class="tabcontent">
+        <h2>Könyvelés tartalma</h2>
+        <p>Itt a beállítások jelennek meg...</p>
+    </div> 
+
+    <div id="task" class="tabcontent">
+        <h2>Task management tartalma</h2>
+        <p>Itt a beállítások jelennek meg...</p>
+    </div> 
+
+
 </body>
 </html>
-
-

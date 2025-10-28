@@ -1,0 +1,441 @@
+body{
+    background-color: #333;
+}
+
+.content {
+    display: none; /* Alapértelmezetten elrejtjük a tartalmat */
+}
+.active {
+    display: block; /* Csak az aktív tartalom látszik */
+}
+
+.sidebar{
+    background-color: #222;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100%;
+    padding-top: 20px;
+}
+
+.sidebar ul li a {
+    color: white; /* A linkek színét fehérre állítjuk */
+    text-decoration: none;
+    display: block;
+}
+
+.sidebar ul li a:hover {
+    background-color: #575757;
+    color: black; /* Hover állapotban fekete lesz a szöveg */
+}
+.button{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    padding: 8px;
+    color: white;
+    cursor: pointer;
+    background: transparent;
+    border-style: none;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s ease;
+}
+
+/* Lista alap stílusok */
+.button-list {
+    list-style: none; /* Eltávolítja az alapértelmezett felsorolási jelet */
+    padding: 0;
+    margin: 0;
+}
+
+.button-list .button {
+    display: inline-block; /* Gombok sorba rendezése */
+    padding: 10px 20px;
+    margin: 10px;
+    position: relative;
+    overflow: hidden; /* Biztosítja, hogy az áthaladó effekt ne lépjen ki a gomb határaiból */
+    background: #333;
+    color: white;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transition: left 0.3s ease; /* Sima átmenet az effekt miatt */
+    z-index: 0; /* A pseudo-elemet a szöveg mögé helyezi */
+}
+
+.button:hover::before {
+    left: 0; /* Az effekt jobbra mozog */
+}
+
+.button:hover {
+    color: black; /* A szöveg fekete lesz, amikor a háttér fehér */
+}
+
+.button span {
+    position: relative;
+    z-index: 1; /* A szöveg fölé helyezi a pseudo-elemet */
+}
+
+/*________________________________Excel gomb______________________________________________________________*/
+
+.excel, .uj, .email, .csomag {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    padding: 8px;
+    color: white;
+    cursor: pointer;
+    background: transparent;
+    border-style: none;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s ease;
+}
+
+.excel::before, .uj::before, .email::before, .csomag::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: #217346; /* A háttérszín ugyanaz marad, változtathatod, ha szükséges */
+    transition: left 0.3s ease; /* Sima átmenet az effekt miatt */
+    z-index: 0; /* A pseudo-elemet a szöveg mögé helyezi */
+}
+
+.excel:hover::before, .uj:hover::before, .email:hover::before, .csomag:hover::before {
+    left: 0; /* Az effekt jobbra mozog */
+}
+
+.excel:hover, .uj:hover, .email:hover, .csomag:hover {
+    color: #fff; /* A szöveg színe fehér lesz a hover esetén */
+}
+
+.excel span, .uj span, .email span, .csomag span {
+    position: relative;
+    z-index: 1; /* A szöveg fölé helyezi a pseudo-elemet */
+}
+
+
+/*________________________________________________________________________________________________________*/
+
+.vonal {
+    width: 100px; /* Adjust width as needed */
+    background-color: #fff; /* Color of the separator line */
+    height: 5px; /* Adjust height as needed */
+    margin-top: 20px; /* Space around the separator */
+    margin-left: 8px;
+}
+
+.vonal_card {
+    width: 100px; /* Adjust width as needed */
+    background-color: #fff; /* Color of the separator line */
+    height: 3px; /* Adjust height as needed */
+    margin-top: 3px; /* Space around the separator */
+}
+
+
+
+
+h1{
+    margin-top: 10px;
+}
+
+
+
+
+.tabcontent.active {
+    display: block;
+    transform: translateY(0); /* Végső pozíció: normál helyen */
+    opacity: 1;
+}
+
+.tabcontent {
+    margin-left: 300px; /* Ezzel a margin-nal eltoljuk a tartalmat a menütől */
+    padding-left: 30px;
+    padding-top: 10px;
+    color: #fff;
+    font-family: 'poppins' , sans-serif;
+    display: none;
+    transform: translateY(100%); /* Kezdő pozíció: alulról becsúszás */
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.tabcontent.exiting {
+    transform: translateY(-100%); /* Felülre kicsúszás */
+    opacity: 0;
+    display: block;
+}
+
+
+
+
+
+
+
+
+
+.copy{
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    position: absolute;
+    bottom: 15;
+    align-items: center;
+    width: 60%; /* Az elem szélessége lefedi az oldal szélességét */
+    text-align: center; /* A szöveg középre igazítása */
+    font-size: 12px;
+    margin-left: 0;
+}
+
+#home {
+    margin-left: 300px; /* Ezzel a margin-nal eltoljuk a tartalmat a menütől */
+    padding-left: 30px;
+    padding-top: 10px;
+    color: #fff;
+    font-family: 'poppins' , sans-serif;
+}
+
+
+.fooldal_card{
+    background-color: #111;
+    height: auto; /* Növelt magasság a téglalaphoz */
+    width: 300px; /* Szélesebb kártya */
+    padding: 20px; /* Nagyobb belső margó */
+    color: #fff; /* Szöveg színe, hogy látszódjon a sötét háttéren */
+    border-radius: 30px; /* Enyhén lekerekített sarkok */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin-right: 15px;
+    margin-top: 15px;
+    transition: transform 0.3s ease;
+}
+
+.fooldal_card1{
+    background-color: #111;
+    height: auto; /* Növelt magasság a téglalaphoz */
+    width: 203px; /* Szélesebb kártya */
+    padding: 20px; /* Nagyobb belső margó */
+    color: #fff; /* Szöveg színe, hogy látszódjon a sötét háttéren */
+    border-radius: 30px; /* Enyhén lekerekített sarkok */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin-right: 15px;
+    margin-top: 15px;
+    transition: transform 0.3s ease;
+}
+
+.fooldal_card2{
+    background-color: #111;
+    height: auto; /* Növelt magasság a téglalaphoz */
+    width: 1000px; /* Szélesebb kártya */
+    padding: 20px; /* Nagyobb belső margó */
+    color: #fff; /* Szöveg színe, hogy látszódjon a sötét háttéren */
+    border-radius: 30px; /* Enyhén lekerekített sarkok */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin-right: 15px;
+    margin-top: 15px;
+    transition: transform 0.3s ease;
+}
+
+
+
+.fooldal_card3{
+    background-color: #111;
+    height: auto; /* Növelt magasság a téglalaphoz */
+    width: 400px; /* Szélesebb kártya */
+    padding: 20px; /* Nagyobb belső margó */
+    color: #fff; /* Szöveg színe, hogy látszódjon a sötét háttéren */
+    border-radius: 30px; /* Enyhén lekerekített sarkok */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin-right: 15px;
+    margin-top: 15px;
+    transition: transform 0.2s ease;
+}
+
+
+
+
+.kifizetetlen_card{
+    background-color: #111;
+    height: auto; /* Növelt magasság a téglalaphoz */
+    width: 1250px; /* Szélesebb kártya */
+    padding: 20px; /* Nagyobb belső margó */
+    color: #fff; /* Szöveg színe, hogy látszódjon a sötét háttéren */
+    border-radius: 30px; /* Enyhén lekerekített sarkok */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin-right: 15px;
+    margin-top: 15px;
+    margin-bottom: 150px;
+    transition: transform 0.3s ease;
+}
+
+.piechart {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-image: conic-gradient(
+        pink 70deg,
+        lightblue 0 235deg,
+        orange 0
+    );
+}
+
+.szam{
+    font-size: 40px;
+    font-weight: 800;
+    margin: 0;
+}
+
+.leiras{
+    font-size: 18px;
+    margin: 0;
+    font-weight: 200;
+}
+
+
+.cards{
+    display: flex;
+    width: 1300px;
+}
+
+canvas {
+    margin-bottom: 20px; /* Távolság a diagram és a lista között */
+}
+
+ul.list {
+    list-style-type: none; /* Lista jelek eltávolítása */
+    padding: 0;
+}
+
+ul.list li {
+    margin-bottom: 10px; /* Távolság az egyes elemek között */
+}
+
+
+.table_szamlak {
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    width: 90%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.table_szamlak th{
+    font-size: 16px; /* biztosítja, hogy a cellák is kövessék */
+    padding: 3px;
+}
+
+.table_szamlak td {
+    font-size: 12px; /* biztosítja, hogy a cellák is kövessék */
+    padding: 3px;
+}
+
+.szamlakezeles{
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+}
+
+
+.fooldal_table_kif {
+    font-family: 'Poppins', sans-serif; /* Betűtípus */
+    color: #fff; /* Szöveg színe */
+    width: 100%; /* A táblázat teljes szélessége */
+    border-collapse: collapse; /* Határok összevonása */
+}
+
+.header_fiz,.header_szamlak {
+    text-align: left; /* Balra igazított fejléc */
+}
+
+.body_fiz,.body_szamlak {
+    font-size: 12px; /* Betűméret */
+}
+
+th {
+    font-size: 16px; /* Fejléc betűmérete */
+    border-bottom: 1px solid #fff; /* Fehér alsó határ a fejlécnek */
+}
+
+tr {
+    border-bottom: 1px solid #fff;
+}
+
+.body_fiz:hover,.body_szamlak:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Hover effektus */
+    cursor: pointer;
+}
+
+.tabel_excel{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+@keyframes grow {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.02);
+    }
+}
+
+/*ÚJ SZÁMLA*/
+.background-blur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 5;
+    backdrop-filter: blur(5px); /* Csak a háttér homályosítása */
+}
+
+/* Popup alapértelmezett rejtett */
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #222;
+    padding: 20px;
+    border-radius: 5px;
+    width: 1250px;
+    height: 800px;
+    border-radius: 50px;
+    z-index: 10; /* A popup magasabb z-indexen legyen, hogy a háttér felett legyen */
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* A popup megjelenítéséhez szükséges stílus */
+.popup.show {
+    display: block;
+}
+
+/* Háttér elhomályosítás megjelenítése */
+.background-blur.show {
+    display: block;
+}
+
+.uj_szla_cim{
+    font-family: 'poppins', sans-serif;
+    color: #fff;
+}
