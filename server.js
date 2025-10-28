@@ -27,9 +27,10 @@ async function connectDB() {
 }
 connectDB();
 
-// Endpoints
+// Health endpoint
 app.get("/health", (req, res) => res.status(200).send("OK"));
 
+// Partners endpoint
 app.get("/partners", async (req, res) => {
   try {
     const { name, completion } = req.query;
@@ -50,7 +51,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// Node.js HTTP szerver 3000 porton
+// Node.js HTTP szerver (3000 port)
 app.listen(3000, () => {
-  console.log("Server running on port 3000");
+  console.log("Server running on http://127.0.0.1:3000");
 });
