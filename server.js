@@ -1,20 +1,25 @@
+const https = require("https");
+const fs = require("fs");
 const express = require("express");
 const cors = require("cors");
 const { MongoClient } = require("mongodb");
 const path = require("path");
 
-// App inicializálása
+// Express app inicializálása
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
 
-// Statikus fájlok kiszolgálása
-app.use(express.static(path.join(__dirname)));
+// SSL tanúsítványok self-signed
+const sslOptions = {
+  key: fs.readFileSync(path.join(__dirname, "server.key")),
+  cert: fs.readFileSync(path.join(__dirname, "server.cert"))
+};
 
-// MongoDB URI (ha később .env-et szeretnél használni, itt cserélheted)
+// MongoDB URI és client
 const uri = "mongodb+srv://CMS_BOGRAPHIC:Kiralyok007@mgf.ym6ix.mongodb.net/?retryWrites=true&w=majority&appName=MGF";
 const client = new MongoClient(uri);
-
 let collection;
 
 // MongoDB csatlakozás
@@ -50,14 +55,12 @@ app.get("/partners", async (req, res) => {
   }
 });
 
-// Gyökér útvonal (index.html kiszolgálása)
+// index.html kiszolgálása
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// Szerver indítása
-const PORT = 3000;
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on http://0.0.0.0:${PORT}`);
+// HTTPS szerver indítása 443-on
+https.createServer(sslOptions, app).listen(443, () => {
+  console.log("HTTPS Server running on port 443");
 });
-
