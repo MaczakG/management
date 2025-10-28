@@ -1,8 +1,26 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Partnerek keresése</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    input { margin-right: 10px; padding: 5px; }
+    button { padding: 5px 10px; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+
+<h2>Partnerek keresése</h2>
+
 <input id="name" placeholder="Keresés név alapján">
 <input id="completion" placeholder="Teljesítés típusa">
 <button onclick="loadData()">Keresés</button>
 
-<table id="dataTable" border="1">
+<table id="dataTable">
   <thead>
     <tr>
       <th>Név</th>
@@ -20,24 +38,44 @@ async function loadData() {
   const name = document.getElementById("name").value;
   const completion = document.getElementById("completion").value;
 
-  const res = await fetch(`https://your-amplify-backend-url/api/partners?name=${name}&completion=${completion}`);
-  const data = await res.json();
+  try {
+    // Cseréld ki <EC2_PUBLIC_IP>-t a saját szervered publikus IP-jére
+    const res = await fetch(`https://13.60.229.11/partners?name=${encodeURIComponent(name)}&completion=${encodeURIComponent(completion)}`);
+    if (!res.ok) throw new Error("Hálózati hiba");
 
-  const tbody = document.querySelector("#dataTable tbody");
-  tbody.innerHTML = "";
+    const data = await res.json();
 
-  data.forEach(item => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${item.Name || ""}</td>
-      <td>${item.Country || ""}</td>
-      <td>${item.City || ""}</td>
-      <td>${item.Vat || ""}</td>
-      <td>${item.Completion_type || ""}</td>
-    `;
-    tbody.appendChild(tr);
-  });
+    const tbody = document.querySelector("#dataTable tbody");
+    tbody.innerHTML = "";
+
+    if (data.length === 0) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td colspan="5" style="text-align:center;">Nincs találat</td>`;
+      tbody.appendChild(tr);
+      return;
+    }
+
+    data.forEach(item => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${item.Name || ""}</td>
+        <td>${item.Country || ""}</td>
+        <td>${item.City || ""}</td>
+        <td>${item.Vat || ""}</td>
+        <td>${item.Completion_type || ""}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+  } catch (err) {
+    console.error("Hiba a lekérés során:", err);
+    alert("Hiba a lekérés során. Ellenőrizd, hogy a szerver fut és a publikus IP helyes.");
+  }
 }
 
+// Betöltéskor is jelenítse meg az adatokat
 loadData();
 </script>
+
+</body>
+</html>
