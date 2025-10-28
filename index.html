@@ -56,7 +56,7 @@ async function loadData() {
     const completion = document.getElementById("completionFilter").value;
 
     // EC2 publikus IP + Node.js szerver port
-    const url = new URL("http://13.60.229.11/partners"); // <-- cseréld a saját publikus IP-re
+    const url = new URL("https://13.60.229.11/partners"); // <-- cseréld a saját publikus IP-re
     if (name) url.searchParams.append("name", name);
     if (completion) url.searchParams.append("completion", completion);
 
@@ -90,4 +90,5 @@ loadData();
 </script>
 </body>
 </html>
+
 
