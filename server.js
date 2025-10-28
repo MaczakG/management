@@ -1,28 +1,19 @@
-const https = require("https");
-const fs = require("fs");
 const express = require("express");
 const cors = require("cors");
 const { MongoClient } = require("mongodb");
 const path = require("path");
 
-// Express app inicializálása
+// Express app
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
-// SSL tanúsítványok self-signed
-const sslOptions = {
-  key: fs.readFileSync(path.join(__dirname, "server.key")),
-  cert: fs.readFileSync(path.join(__dirname, "server.cert"))
-};
-
-// MongoDB URI és client
+// MongoDB
 const uri = "mongodb+srv://CMS_BOGRAPHIC:Kiralyok007@mgf.ym6ix.mongodb.net/?retryWrites=true&w=majority&appName=MGF";
 const client = new MongoClient(uri);
 let collection;
 
-// MongoDB csatlakozás
 async function connectDB() {
   try {
     await client.connect();
@@ -36,10 +27,9 @@ async function connectDB() {
 }
 connectDB();
 
-// Health endpoint
+// Endpoints
 app.get("/health", (req, res) => res.status(200).send("OK"));
 
-// API endpoint a partnerek lekéréséhez
 app.get("/partners", async (req, res) => {
   try {
     const { name, completion } = req.query;
@@ -55,13 +45,12 @@ app.get("/partners", async (req, res) => {
   }
 });
 
-// index.html kiszolgálása
+// index.html
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// HTTPS szerver indítása 443-on
-https.createServer(sslOptions, app).listen(3000, () => {
-  console.log("HTTPS Server running on port 3000");
+// Node.js HTTP szerver 3000 porton
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
 });
-
