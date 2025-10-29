@@ -55,3 +55,27 @@ app.get("/", (req, res) => {
 app.listen(3000, () => {
   console.log("Server running on http://127.0.0.1:3000");
 });
+
+
+// Upsert (hozzáadás/módosítás) végpont
+app.post("/partners", async (req, res) => {
+  try {
+    const data = req.body;
+
+    if (!data.ID) {
+      return res.status(400).json({ error: "Az ID mező kötelező!" });
+    }
+
+    // Upsert: ha van ilyen ID, frissít; ha nincs, létrehoz
+    const result = await collection.updateOne(
+      { ID: data.ID },
+      { $set: data },
+      { upsert: true }
+    );
+
+    res.json({ success: true, result });
+  } catch (err) {
+    console.error("Hiba a mentés során:", err);
+    res.status(500).json({ error: "Hiba a mentés során" });
+  }
+});
