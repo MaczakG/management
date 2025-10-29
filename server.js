@@ -57,8 +57,10 @@ app.listen(3000, () => {
 });
 
 
-// Upsert (hozzáadás/módosítás) végpont
 app.post("/partners", async (req, res) => {
+  console.log("POST /partners hívás érkezett");
+  console.log("Request body:", req.body);
+
   try {
     const data = req.body;
 
@@ -66,7 +68,6 @@ app.post("/partners", async (req, res) => {
       return res.status(400).json({ error: "Az ID mező kötelező!" });
     }
 
-    // Upsert: ha van ilyen ID, frissít; ha nincs, létrehoz
     const result = await collection.updateOne(
       { ID: data.ID },
       { $set: data },
@@ -79,3 +80,4 @@ app.post("/partners", async (req, res) => {
     res.status(500).json({ error: "Hiba a mentés során" });
   }
 });
+
