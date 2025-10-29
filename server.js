@@ -58,14 +58,9 @@ app.listen(3000, () => {
 
 
 app.post("/partners", async (req, res) => {
-    console.log("POST érkezett:", req.body);
-
   try {
     const data = req.body;
-
-    if (!data.ID) {
-      return res.status(400).json({ error: "Az ID mező kötelező!" });
-    }
+    if (!data.ID) return res.status(400).json({ error: "Az ID mező kötelező!" });
 
     const result = await collection.updateOne(
       { ID: data.ID },
@@ -79,4 +74,6 @@ app.post("/partners", async (req, res) => {
     res.status(500).json({ error: "Hiba a mentés során" });
   }
 });
+
+
 
