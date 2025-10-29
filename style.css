@@ -533,3 +533,115 @@ thead th:hover {
     font-family: 'poppins', sans-serif;
     color: #fff;
 }
+
+
+.partner-form {
+  margin-top: 10px;
+}
+
+.form-section-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 17px;
+  color: #fff;
+  margin-top: 20px;
+  margin-bottom: 6px;
+  border-left: 4px solid #219ebc;
+  padding-left: 8px;
+}
+
+.form-grid {
+  display: grid;
+  gap: 10px 20px; /* kisebb hézag */
+  text-align: left;
+  padding: 15px 25px;
+  background-color: #1a1a1a;
+  border-radius: 15px;
+  margin-bottom: 15px;
+}
+
+/* --- AZONOSÍTÓK --- */
+.grid-az {
+  grid-template-columns: repeat(5, 1fr);
+  align-items: start;
+}
+.grid-az .wide {
+  grid-column: span 2;
+}
+
+/* --- ÜGYFÉLADATOK --- */
+.grid-ugyfel {
+  grid-template-columns: 15% 15% 15% 55%;
+  align-items: start;
+}
+.grid-ugyfel .form-group {
+  width: 100%;
+}
+
+/* --- PÉNZÜGY --- */
+.grid-penzugy {
+  grid-template-columns: 20% 20% 60%;
+  align-items: start;
+}
+.grid-penzugy .form-group {
+  width: 100%;
+}
+
+/* --- SZÁMLÁZÁS --- */
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+  align-items: start;
+}
+
+/* --- Általános input stílusok --- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ccc;
+  margin-bottom: 4px;
+}
+
+.form-group input {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #575757;
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  transition: border 0.3s ease, background-color 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #219ebc;
+  background-color: #444;
+  outline: none;
+}
+
+/* --- Gomb --- */
+#closeBtn {
+  margin-top: 15px;
+  background-color: #c1121f;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 25px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#closeBtn:hover {
+  background-color: #a60e19;
+  transform: scale(1.05);
+}
+
+
+

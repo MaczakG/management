@@ -16,7 +16,7 @@
     <div class="sidebar">
         <ul>
             <button class="button" onclick="openTab(event, 'kimeno_szamlak')">Kimenő számlák</button>
-            <button class="button" onclick="openTab(event, 'bejovo_szamlak')">Bejövő számlák</button>
+            <button class="button" onclick="openTab(event, 'szamlazas')">Számlázás tételek</button>
             <button class="button" onclick="openTab(event, 'partnerek')">Partnerek</button>
             <button class="button" onclick="openTab(event, 'felhasznalok')">Felhasználók</button>
             <button class="button" onclick="openTab(event, 'ertesitok')">Értesítések</button>
@@ -32,13 +32,59 @@
 
     <!-- Popup -->
     <div id="popup" class="popup">
-        <div class="popup-content">
-            <h1 class="uj_szla_cim">Új partner rögzítése</h1>
-            <input type="text" placeholder="Első mező"><br><br>
-            <input type="text" placeholder="Második mező"><br><br>
-            <button class="button" id="closeBtn">Bezárás</button>
-        </div>
-    </div>
+  <div class="popup-content">
+    <h1 class="uj_szla_cim">Új partner rögzítése</h1>
+
+    <form class="partner-form">
+
+      <!-- AZONOSÍTÓK -->
+      <h2 class="form-section-title">Azonosítók</h2>
+      <div class="form-grid grid-az">
+        <div class="form-group"><label>ID</label><input type="text" placeholder="ID"></div>
+        <div class="form-group"><label>TaskID</label><input type="text" placeholder="TaskID"></div>
+        <div class="form-group"><label>Name</label><input type="text" placeholder="Name"></div>
+        <div class="form-group"><label>Partner_type</label><input type="text" placeholder="Partner_type"></div>
+        <div class="form-group"><label>Completion_type</label><input type="text" placeholder="Completion_type"></div>
+        <div class="form-group wide"><label>Finance_type</label><input type="text" placeholder="Finance_type"></div>
+      </div>
+
+      <!-- ÜGYFÉLADATOK -->
+      <h2 class="form-section-title">Ügyféladatok</h2>
+      <div class="form-grid grid-ugyfel">
+        <div class="form-group small"><label>Country</label><input type="text" placeholder="Country"></div>
+        <div class="form-group small"><label>Zip</label><input type="text" placeholder="Zip"></div>
+        <div class="form-group small"><label>City</label><input type="text" placeholder="City"></div>
+        <div class="form-group large"><label>Street</label><input type="text" placeholder="Street"></div>
+        <div class="form-group"><label>Email</label><input type="email" placeholder="Email"></div>
+        <div class="form-group"><label>Reg_number</label><input type="text" placeholder="Reg_number"></div>
+      </div>
+
+      <!-- PÉNZÜGY -->
+      <h2 class="form-section-title">Pénzügy</h2>
+      <div class="form-grid grid-penzugy">
+        <div class="form-group vat-small"><label>Vat</label><input type="text" placeholder="Vat"></div>
+        <div class="form-group vat-small"><label>EU_vat</label><input type="text" placeholder="EU_vat"></div>
+        <div class="form-group vat-wide"><label>Bank</label><input type="text" placeholder="Bank"></div>
+      </div>
+
+      <!-- SZÁMLÁZÁS -->
+      <h2 class="form-section-title">Számlázás</h2>
+      <div class="form-grid grid-4">
+        <div class="form-group"><label>Invoice_type</label><input type="text" placeholder="Invoice_type"></div>
+        <div class="form-group"><label>Currency</label><input type="text" placeholder="Currency"></div>
+        <div class="form-group"><label>Language</label><input type="text" placeholder="Language"></div>
+        <div class="form-group"><label>Day</label><input type="text" placeholder="Day"></div>
+      </div>
+
+      <button class="button" id="closeBtn">Bezárás</button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
 
 
 
@@ -131,9 +177,9 @@
         </table>
     </div>
 
-    <div id="bejovo_szamlak" class="tabcontent">
-        <h2>Bejövő számlák tartalma</h2>
-        <p>Itt a bejövő számlák listája jelenik meg...</p>
+    <div id="szamlazas" class="tabcontent">
+        <h2>Számlázás</h2>
+        <p>Itt a számlázással kapscsolatos dolgok listája jelenik meg...</p>
     </div>
 
 
