@@ -8,47 +8,51 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔹 Szolgáltatás azonosító
+// 🔹 Szolgáltatás neve – több szolgáltatás esetén így azonosítható
 const serviceName = "PartnerListService";
 
-const client = new MongoClient("mongodb+srv://CMS_BOGRAPHIC:Kiralyok007@mgf.ym6ix.mongodb.net/?retryWrites=true&w=majority");
+// 🔹 MongoDB kapcsolat
+const client = new MongoClient(
+  "mongodb+srv://CMS_BOGRAPHIC:Kiralyok007@mgf.ym6ix.mongodb.net/?retryWrites=true&w=majority"
+);
 
 let partnerCollection;
-let servicesCollection;
+let serviceCollection;
 let logsCollection;
 
 // --- Adatbázis csatlakozás ---
 async function connectDB() {
   await client.connect();
   const mainDB = client.db("MAIN_DATABASE");
-  const servicesDB = client.db("Services");
 
-  partnerCollection = mainDB.collection("Partner_datas");
-  servicesCollection = servicesDB.collection("Services");
-  logsCollection = servicesDB.collection("service_logs");
+  partnerCollection = mainDB.collection("Partner_datas"); // partnerek
+  serviceCollection = mainDB.collection("Service"); // címzettek, beállítások
+  logsCollection = mainDB.collection("service_logs"); // logok
 
-  console.log("MongoDB connected for both MAIN_DATABASE and Services!");
+  console.log("✅ MongoDB connected – MAIN_DATABASE alatt minden kollekció elérhető.");
 }
 connectDB();
 
 // --- Log írás ---
 async function writeLog(status, message, details = {}) {
   const logEntry = {
-    serviceName,    // 🔹 szolgáltatás neve
+    serviceName, // pl. PartnerListService
     timestamp: new Date(),
-    status,         // "INFO" | "SUCCESS" | "ERROR"
-    message,        // rövid szöveg
-    details         // opcionális részletek (objektum)
+    status, // "INFO", "SUCCESS", "ERROR"
+    message,
+    details
   };
+
   try {
     await logsCollection.insertOne(logEntry);
   } catch (err) {
     console.error("❌ Log mentési hiba:", err.message);
   }
+
   console.log(`[${serviceName}] [${status}] ${message}`);
 }
 
-// --- HTML táblázat generálás ---
+// --- HTML táblázat generálása ---
 function generateHTMLTable(data) {
   if (!data.length) return "<p>Nincs elérhető partner.</p>";
 
@@ -94,7 +98,7 @@ async function sendEmail(to, name, htmlTable) {
     service: "gmail",
     auth: {
       user: "penzugy.mgf@gmail.com",
-      pass: "ufct kbek ysrz pegi" // App Password
+      pass: "ufct kbek ysrz pegi" // Gmail App Password
     }
   });
 
@@ -102,7 +106,7 @@ async function sendEmail(to, name, htmlTable) {
     <p>Tisztelt ${name},</p>
     <p>Az aktuálisan teljesítő partnerek listája:</p>
     ${htmlTable}
-    <p>Üdvözlettel,<br>Automata értesítő</p>
+    <p>Üdvözlettel,<br>Automata értesítő (${serviceName})</p>
   `;
 
   const mailOptions = {
@@ -127,7 +131,7 @@ async function runWeeklySummary() {
 
   try {
     // 1️⃣ Címzett lekérdezése
-    const recipient = await servicesCollection.findOne({
+    const recipient = await serviceCollection.findOne({
       _id: { $eq: "690205357c5f8f2362256cfe" },
       futtatas: { $regex: /^igen$/i }
     });
@@ -147,10 +151,10 @@ async function runWeeklySummary() {
       return;
     }
 
-    // 3️⃣ HTML táblázat generálása
+    // 3️⃣ HTML táblázat
     const htmlTable = generateHTMLTable(partners);
 
-    // 4️⃣ E-mail küldése
+    // 4️⃣ E-mail küldés
     await sendEmail(recipient.cimzett_email, recipient.cimzett_nev, htmlTable);
 
     await writeLog("SUCCESS", "Heti összefoglaló sikeresen elküldve.", {
