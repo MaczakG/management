@@ -141,7 +141,7 @@ document.querySelector("#partnerForm").addEventListener("submit", async (e) => {
     };
 
     try {
-        const res = await fetch("/partners", {
+        const res = await fetch("https://13.60.229.11/partners", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
@@ -156,6 +156,7 @@ document.querySelector("#partnerForm").addEventListener("submit", async (e) => {
         alert("Hiba történt a mentés során.");
     }
 });
+
 
 
 
