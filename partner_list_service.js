@@ -132,8 +132,11 @@ async function runWeeklySummary() {
   try {
     // 1️⃣ Lekérdezzük az összes címzettet, ahol futtatas = "Igen"
     const recipients = await serviceCollection
-      .find({ futtatas: { $regex: /^igen$/i } })
-      .toArray();
+  .find({
+    $expr: { $eq: [{ $toLower: { $trim: { input: "$futtatas" } } }, "igen"] }
+  })
+  .toArray();
+
 
     if (!recipients.length) {
       await writeLog("INFO", "⏹ Nincs engedélyezett címzett.");
@@ -187,4 +190,5 @@ app.get("/run-weekly-summary", async (req, res) => {
 app.listen(3001, () =>
   console.log(`[${serviceName}] running on http://127.0.0.1:3001`)
 );
+
 
