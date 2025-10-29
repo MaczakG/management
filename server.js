@@ -58,8 +58,7 @@ app.listen(3000, () => {
 
 
 app.post("/partners", async (req, res) => {
-  console.log("POST /partners hívás érkezett");
-  console.log("Request body:", req.body);
+    console.log("POST érkezett:", req.body);
 
   try {
     const data = req.body;

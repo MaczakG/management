@@ -142,11 +142,12 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     };
 
     try {
-        const res = await fetch("https://13.60.229.11/partners", {
-            method: "POST", // POST a módosításhoz/upserthez
+            fetch(`https://13.60.229.11/partners`, {
+            method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
         });
+
 
         if (!res.ok) throw new Error("Hiba a mentés során: " + res.status);
         alert("Sikeres mentés!");
