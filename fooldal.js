@@ -1,3 +1,4 @@
+
 function openTab(evt, tabName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -40,7 +41,6 @@ function openTab(evt, tabName) {
     // Az aktuális gomb "active" osztály hozzáadása
     evt.currentTarget.className += " active";
 }
-
 
 
 
@@ -115,10 +115,9 @@ async function loadData() {
     }
 }
 
-document.querySelector("form").addEventListener("submit", async (e) => {
-    e.preventDefault(); // Ne töltse újra az oldalt
+document.querySelector("#partnerForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-    // Form adatok összegyűjtése
     const formData = {
         ID: document.querySelector('input[placeholder="ID"]').value,
         TaskID: document.querySelector('input[placeholder="TaskID"]').value,
@@ -142,20 +141,23 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     };
 
     try {
-            fetch(`https://13.60.229.11/partners`, {
+        const res = await fetch("/partners", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
         });
 
-
         if (!res.ok) throw new Error("Hiba a mentés során: " + res.status);
+
         alert("Sikeres mentés!");
-        loadData(); // Táblázat frissítése
+        loadData(); // frissíti a táblázatot
     } catch (err) {
         console.error(err);
         alert("Hiba történt a mentés során.");
     }
 });
+
+
+
 
 
