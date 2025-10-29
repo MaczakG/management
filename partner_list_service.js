@@ -130,18 +130,17 @@ async function runWeeklySummary() {
   await writeLog("INFO", "▶ Heti összefoglaló indítása...");
 
   try {
-    // 1️⃣ Címzett lekérdezése
-    const recipient = await serviceCollection.findOne({
-      _id: { $eq: "690205357c5f8f2362256cfe" },
-      futtatas: { $regex: /^igen$/i }
-    });
+    // 1️⃣ Lekérdezzük az összes címzettet, ahol futtatas = "Igen"
+    const recipients = await serviceCollection
+      .find({ futtatas: { $regex: /^igen$/i } })
+      .toArray();
 
-    if (!recipient) {
-      await writeLog("INFO", "⏹ A futtatás le van tiltva vagy nincs címzett.");
+    if (!recipients.length) {
+      await writeLog("INFO", "⏹ Nincs engedélyezett címzett.");
       return;
     }
 
-    // 2️⃣ Partner lekérdezés
+    // 2️⃣ 'Folyamatos' partnerek lekérdezése
     const partners = await partnerCollection
       .find({ Completion_type: "Folyamatos" })
       .toArray();
@@ -151,21 +150,23 @@ async function runWeeklySummary() {
       return;
     }
 
-    // 3️⃣ HTML táblázat
+    // 3️⃣ HTML táblázat generálása
     const htmlTable = generateHTMLTable(partners);
 
-    // 4️⃣ E-mail küldés
-    await sendEmail(recipient.cimzett_email, recipient.cimzett_nev, htmlTable);
-
-    await writeLog("SUCCESS", "Heti összefoglaló sikeresen elküldve.", {
-      recipient: recipient.cimzett_email,
-      count: partners.length
-    });
+    // 4️⃣ E-mail küldése minden címzettnek
+    for (const recipient of recipients) {
+      await sendEmail(recipient.cimzett_email, recipient.cimzett_nev, htmlTable);
+      await writeLog("SUCCESS", `Heti összefoglaló elküldve: ${recipient.cimzett_email}`, {
+        recipient: recipient.cimzett_email,
+        count: partners.length
+      });
+    }
   } catch (err) {
     await writeLog("ERROR", "Hiba a heti összefoglaló során.", { error: err.message });
     console.error("❌ Hiba:", err);
   }
 }
+
 
 // --- Ütemezés: minden hétfőn 08:00 ---
 cron.schedule("0 8 * * 1", () => {
@@ -186,3 +187,4 @@ app.get("/run-weekly-summary", async (req, res) => {
 app.listen(3001, () =>
   console.log(`[${serviceName}] running on http://127.0.0.1:3001`)
 );
+
