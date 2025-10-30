@@ -8,51 +8,25 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔹 Szolgáltatás neve – több szolgáltatás esetén így azonosítható
-const serviceName = "PartnerListService";
-
-// 🔹 MongoDB kapcsolat
-const client = new MongoClient(
-  "mongodb+srv://CMS_BOGRAPHIC:Kiralyok007@mgf.ym6ix.mongodb.net/?retryWrites=true&w=majority"
-);
+const client = new MongoClient("mongodb+srv://CMS_BOGRAPHIC:Kiralyok007@mgf.ym6ix.mongodb.net/?retryWrites=true&w=majority");
 
 let partnerCollection;
-let serviceCollection;
-let logsCollection;
+let servicesCollection;
 
-// --- Adatbázis csatlakozás ---
+// --- Csatlakozás az adatbázishoz ---
 async function connectDB() {
   await client.connect();
   const mainDB = client.db("MAIN_DATABASE");
+  const servicesDB = client.db("Services");
 
-  partnerCollection = mainDB.collection("Partner_datas"); // partnerek
-  serviceCollection = mainDB.collection("Service"); // címzettek, beállítások
-  logsCollection = mainDB.collection("service_logs"); // logok
+  partnerCollection = mainDB.collection("Partner_datas");
+  servicesCollection = servicesDB.collection("Services");
 
-  console.log("✅ MongoDB connected – MAIN_DATABASE alatt minden kollekció elérhető.");
+  console.log("MongoDB connected for both MAIN_DATABASE and Services!");
 }
 connectDB();
 
-// --- Log írás ---
-async function writeLog(status, message, details = {}) {
-  const logEntry = {
-    serviceName, // pl. PartnerListService
-    timestamp: new Date(),
-    status, // "INFO", "SUCCESS", "ERROR"
-    message,
-    details
-  };
-
-  try {
-    await logsCollection.insertOne(logEntry);
-  } catch (err) {
-    console.error("❌ Log mentési hiba:", err.message);
-  }
-
-  console.log(`[${serviceName}] [${status}] ${message}`);
-}
-
-// --- HTML táblázat generálása ---
+// --- Segédfüggvény: HTML táblázat generálása ---
 function generateHTMLTable(data) {
   if (!data.length) return "<p>Nincs elérhető partner.</p>";
 
@@ -98,7 +72,7 @@ async function sendEmail(to, name, htmlTable) {
     service: "gmail",
     auth: {
       user: "penzugy.mgf@gmail.com",
-      pass: "ufct kbek ysrz pegi" // Gmail App Password
+      pass: "ufct kbek ysrz pegi" // App Password (ne tedd nyilvános repo-ba)
     }
   });
 
@@ -106,7 +80,7 @@ async function sendEmail(to, name, htmlTable) {
     <p>Tisztelt ${name},</p>
     <p>Az aktuálisan teljesítő partnerek listája:</p>
     ${htmlTable}
-    <p>Üdvözlettel,<br>Automata értesítő (${serviceName})</p>
+    <p>Üdvözlettel,<br>Automata értesítő</p>
   `;
 
   const mailOptions = {
@@ -116,13 +90,8 @@ async function sendEmail(to, name, htmlTable) {
     html: htmlContent
   };
 
-  try {
-    await transporter.sendMail(mailOptions);
-    await writeLog("SUCCESS", `E-mail elküldve: ${to}`);
-  } catch (error) {
-    await writeLog("ERROR", `E-mail küldési hiba: ${error.message}`, { to });
-    throw error;
-  }
+  await transporter.sendMail(mailOptions);
+  console.log("E-mail elküldve:", to);
 }
 
 // --- Fő folyamat ---
@@ -132,11 +101,8 @@ async function runWeeklySummary() {
   try {
     // 1️⃣ Lekérdezzük az összes címzettet, ahol futtatas = "Igen"
     const recipients = await serviceCollection
-    .find({ futtatas: { $regex: /igen/i } })
-    .toArray();
-
-
-
+      .find({ futtatas: { $regex: /^igen$/i } })
+      .toArray();
 
     if (!recipients.length) {
       await writeLog("INFO", "⏹ Nincs engedélyezett címzett.");
@@ -171,25 +137,20 @@ async function runWeeklySummary() {
 }
 
 
-// --- Ütemezés: minden hétfőn 08:00 ---
+// --- Ütemezés: minden hétfőn 08:00-kor ---
 cron.schedule("0 8 * * 1", () => {
   runWeeklySummary().catch(console.error);
 });
 
-// --- Manuális futtatás ---
+// --- Manuális teszt endpoint ---
 app.get("/run-weekly-summary", async (req, res) => {
   try {
     await runWeeklySummary();
-    res.send("E-mail küldés lefutott és logolva lett.");
+    res.send("E-mail küldés lefutott!");
   } catch (err) {
     console.error(err);
-    res.status(500).send("Hiba a futtatás során. Nézd meg a service_logs kollekciót.");
+    res.status(500).send("Hiba a futtatás során.");
   }
 });
 
-app.listen(3001, () =>
-  console.log(`[${serviceName}] running on http://127.0.0.1:3001`)
-);
-
-
-
+app.listen(3001, () => console.log("Weekly service running on http://127.0.0.1:3001"));
