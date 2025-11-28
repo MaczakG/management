@@ -76,4 +76,6 @@ app.post("/partners", async (req, res) => {
 });
 
 // --- SERVER ---
-app.listen(3000, () => console.log("Server running on http://127.0.0.1:3000"));
+app.listen(3000, "0.0.0.0", () => console.log("Server running on http://0.0.0.0:3000"));
+
+
